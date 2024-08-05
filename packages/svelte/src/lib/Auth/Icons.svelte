@@ -1,7 +1,4 @@
-<script lang="ts">
-	import type { Provider } from '@supabase/supabase-js';
-
-	export let provider: Provider;
+<script>export let provider;
 </script>
 
 {#if provider === 'google'}
@@ -181,7 +178,7 @@
 			fill="#008AAA"
 		/>
 	</svg>
-{:else if provider === 'linkedin'}
+{:else if provider === 'linkedin_oidc'}
 	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="21px" height="21px">
 		<path
 			fill="#0288D1"
