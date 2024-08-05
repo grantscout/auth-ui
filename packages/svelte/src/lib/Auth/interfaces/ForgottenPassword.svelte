@@ -1,13 +1,13 @@
 <script lang="ts">
 	import type { SupabaseClient } from '@supabase/supabase-js';
-	import Anchor from '$lib/UI/Anchor.svelte';
-	import Button from '$lib/UI/Button.svelte';
-	import Container from '$lib/UI/Container.svelte';
-	import Input from '$lib/UI/Input.svelte';
-	import Label from '$lib/UI/Label.svelte';
-	import Message from '$lib/UI/Message.svelte';
+	import Anchor from '../../UI/Anchor.svelte';
+	import Button from '../../UI/Button.svelte';
+	import Container from '../../UI/Container.svelte';
+	import Input from '../../UI/Input.svelte';
+	import Label from '../../UI/Label.svelte';
+	import Message from '../../UI/Message.svelte';
 	import { VIEWS, type I18nVariables, type ViewType } from '@supabase/auth-ui-shared';
-	import type { Appearance } from '$lib/types';
+	import type { Appearance } from '../../types';
 
 	export let i18n: I18nVariables;
 	export let supabaseClient: SupabaseClient;
@@ -25,14 +25,23 @@
 		loading = true;
 		error = '';
 		message = '';
-		const { error: resetPasswordError } = await supabaseClient.auth.resetPasswordForEmail(email, {
-			redirectTo
-		});
-		if (resetPasswordError) error = resetPasswordError.message;
-		else message = i18n.forgotten_password?.confirmation_text as string;
+		if (grecaptcha.getResponse() === '') {
+			error = 'Please complete the reCAPTCHA';
+		} else {
+			const { error: resetPasswordError } = await supabaseClient.auth.resetPasswordForEmail(email, {
+				redirectTo
+			});
+			if (resetPasswordError) error = resetPasswordError.message;
+			else message = i18n.forgotten_password?.confirmation_text as string;
+			grecaptcha.reset();
+		}
 		loading = false;
 	}
 </script>
+
+<svelte:head>
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</svelte:head>
 
 <form id="auth-forgot-password" method="post" on:submit|preventDefault={handleSubmit}>
 	<Container direction="vertical" gap="large" {appearance}>
@@ -50,6 +59,7 @@
 					{appearance}
 				/>
 			</div>
+			<div class="g-recaptcha" data-sitekey="6Le2OSAqAAAAAPhgFtFJ0jZYE54phYmfV6262KJ3"></div>
 			<Button type="submit" color="primary" {loading} {appearance}>
 				{loading ? i18n?.forgotten_password?.loading_button_label : i18n?.forgotten_password?.button_label}
 			</Button>
@@ -81,5 +91,8 @@
 <style>
 	form {
 		width: 100%;
+	}
+	.g-recaptcha {
+		margin: 0 auto;
 	}
 </style>
