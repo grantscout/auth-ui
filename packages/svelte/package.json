@@ -1,6 +1,6 @@
 {
 	"name": "@tony_grantscout/auth-ui-svelte",
-	"version": "0.3.0-e",
+	"version": "0.3.0",
 	"type": "module",
 	"publishConfig": {
 		"access": "public"
