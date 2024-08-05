@@ -1,6 +1,6 @@
 {
 	"name": "@tony_grantscout/auth-ui-svelte",
-	"version": "0.3.0",
+	"version": "0.3.0-e",
 	"type": "module",
 	"publishConfig": {
 		"access": "public"
@@ -24,7 +24,7 @@
 		}
 	},
 	"scripts": {
-		"build": "svelte-kit sync && svelte-package && pnpm fix:esm",
+		"build": "svelte-kit sync && svelte-package",
 		"test": "playwright test",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -34,7 +34,7 @@
 	},
 	"dependencies": {
 		"@stitches/core": "^1.2.8",
-		"@supabase/auth-ui-shared": "workspace:*",
+		"@supabase/auth-ui-shared": "^0.1.8",
 		"svelte": "^3.55.1"
 	},
 	"devDependencies": {
